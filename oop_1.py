@@ -21,7 +21,7 @@ class Student:
             return 'Wrong grade, only 0 to 10'
 
     def __str__(self):
-        text = 'Name: ' + self.name + '\nSurname: ' + self.surname
+        text = 'Student ' + '\nName: ' + self.name + '\nSurname: ' + self.surname
         text += '\nAverage grade for homeworks: ' + find_average_grade(self.grades)
         text += '\nCourse in progress: ' + (','.join(self.courses_in_progress))
         text += '\nFinished courses: ' + (', '.join(self.finished_courses))
@@ -36,9 +36,14 @@ class Mentor:
 
 class Lecturer(Mentor):
     """ The child class from class Mentor """
-    def __init__(self):
+    def __init__(self, name, surname):
         super().__init__(name, surname)
         self.rating_grades = {}
+
+    def __str__(self):
+        text = 'Your Lecturer' + '\nName: ' + self.name + '\nSurname: ' + self.surname
+        text += '\nAverage grade for lectures: ' + find_average_grade(self.rating_grades)
+        return text
 
 
 class Reviewer(Mentor):
@@ -51,6 +56,10 @@ class Reviewer(Mentor):
                 student.grades[course] = [grade]
         else:
             return 'Error'
+
+    def __str__(self):
+        text = 'Your Reviewer' + '\nName: ' + self.name + '\nSurname: ' + self.surname
+        return text
 
 
 def find_average_grade(grades):
@@ -73,10 +82,14 @@ best_student.courses_in_progress += ['Python', 'Git']
 cool_reviewer = Reviewer('Some', 'Buddy')
 cool_reviewer.courses_attached += ['Python']
 
+some_lecturer = Lecturer('Some', 'Buddy')
+
+
 cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'Python', 9)
 
-print(best_student.grades)
+print(cool_reviewer)
 print(best_student)
+print(some_lecturer)
 
