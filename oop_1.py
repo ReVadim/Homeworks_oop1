@@ -15,6 +15,16 @@ class Student:
         courses.append(self.finished_courses)
         courses.append(self.courses_in_progress)
 
+    def __lt__(self, other):
+        if average_grade(self.grades) < average_grade(other.grades):
+            return 'The best result is ' + other.name + ' ' + other.surname + ' with a rating ' +\
+                   average_grade(other.grades)
+        elif average_grade(self.grades) == average_grade(other.grades):
+            return 'the same result'
+        else:
+            return 'The best result is ' + self.name + ' ' + self.surname + ' with a rating ' +\
+                   average_grade(self.grades)
+
     def rating_lecturer(self, lecturer, course, grade):
         """ Implement the method for the grading of the lecturers """
         if 0 <= grade <= 10:
@@ -43,6 +53,9 @@ class Mentor:
         self.surname = surname
         self.courses_attached = []
 
+    def __repr__(self):
+        return self.name + ' ' + self.surname + ' courses attached: ' + repr(self.courses_attached)
+
 
 class Lecturer(Mentor):
     """ The child class from class Mentor """
@@ -56,6 +69,16 @@ class Lecturer(Mentor):
         text = '\nYour Lecturer' + '\nName: ' + self.name + '\nSurname: ' + self.surname
         text += '\nAverage grade for lectures: ' + average_grade(self.rating_grades)
         return text
+
+    def __lt__(self, other):
+        if average_grade(self.rating_grades) < average_grade(other.rating_grades):
+            return 'The best result is ' + other.name + ' ' + other.surname + ' with a rating ' +\
+                   average_grade(other.rating_grades)
+        elif average_grade(self.rating_grades) == average_grade(other.rating_grades):
+            return 'the same result'
+        else:
+            return 'The best result is ' + self.name + ' ' + self.surname + ' with a rating ' +\
+                   average_grade(self.rating_grades)
 
 
 class Reviewer(Mentor):
@@ -139,7 +162,7 @@ new_lecturer = Lecturer('Yan', 'Dex')
 best_lecturer = Lecturer('Bill', 'Gates')
 ordinary_student = Student('Max', 'Frai', 'm')
 best_student = Student('Ruoy', 'Eman', 'your_gender')
-cool_reviewer = Reviewer('Some', 'Buddy')
+cool_reviewer = Reviewer('Isaak', 'Newton')
 some_reviewer = Reviewer('Albert', 'Gor')
 
 
@@ -165,7 +188,7 @@ cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'Python', 9)
 some_reviewer.rate_hw(ordinary_student, 'Python', 9)
-some_reviewer.rate_hw(ordinary_student, 'Python', 9)
+some_reviewer.rate_hw(ordinary_student, 'Python', 8)
 cool_reviewer.rate_hw(ordinary_student, 'HTML', 2)
 cool_reviewer.rate_hw(ordinary_student, 'CSS', 8)
 some_reviewer.rate_hw(ordinary_student, 'CSS', 10)
@@ -187,3 +210,8 @@ some_reviewer.rate_hw(best_student, 'Git', 7)
 # print(lecturer_average_grade('Python', all_lecturer))
 # print(lecturer_average_grade('CSS', all_lecturer))
 # print(lecturer_average_grade('Piano', all_lecturer))
+# print(repr(cool_reviewer)) # __repr__ function for class Mentor
+# print(cool_reviewer)
+# print(best_student.__lt__(ordinary_student))
+# print(best_lecturer.__lt__(new_lecturer))
+# print(best_lecturer.__lt__(some_lecturer))
