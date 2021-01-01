@@ -1,5 +1,7 @@
 students = []
 courses = []
+all_lecturer = []
+
 
 class Student:
     def __init__(self, name, surname, gender):
@@ -12,7 +14,6 @@ class Student:
         students.append(self)
         courses.append(self.finished_courses)
         courses.append(self.courses_in_progress)
-
 
     def rating_lecturer(self, lecturer, course, grade):
         """ Implement the method for the grading of the lecturers """
@@ -49,6 +50,7 @@ class Lecturer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.rating_grades = {}
+        all_lecturer.append(self)
 
     def __str__(self):
         text = '\nYour Lecturer' + '\nName: ' + self.name + '\nSurname: ' + self.surname
@@ -79,8 +81,15 @@ def average_grade(some_grades):
     for subject, grades in some_grades.items():
         for grade in grades:
             all_grades.append(grade)
-    av_grade = round((sum(all_grades) / len(all_grades)), 1)
-    return str(av_grade)
+    if len(all_grades) == 0:
+        av_grade = 0
+        return str(av_grade)
+    elif len(all_grades) > 0:
+        av_grade = round((sum(all_grades) / len(all_grades)), 1)
+        return str(av_grade)
+    else:
+        return "error"
+
 
 def average_course(course, lists):
     """ find the average grade of all students in the selected course """
@@ -104,19 +113,42 @@ def average_course(course, lists):
         return 'impossible value'
 
 
+def lecturer_average_grade(course, lists):
+    lect_av_grade = []
+    for value in lists:
+        if course in (sum(courses, [])):
+            if course in value.rating_grades:
+                for x, y in value.rating_grades.items():
+                    if course == x:
+                        lect_av_grade.append(y)
+                    elif course != x:
+                        continue
+        else:
+            return f"the {course} course does not exist"
+    if len(lect_av_grade) != 0:
+        result = round((sum(sum(lect_av_grade, [])) / len(sum(lect_av_grade, []))), 1)
+        return f"the {course} course has an average grade {str(result)}"
+    elif len(lect_av_grade) == 0:
+        return f"the {course} course has no any grades"
+    else:
+        return 'impossible value'
+
+
 some_lecturer = Lecturer('Jonh', 'Smith')
 new_lecturer = Lecturer('Yan', 'Dex')
+best_lecturer = Lecturer('Bill', 'Gates')
 ordinary_student = Student('Max', 'Frai', 'm')
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 cool_reviewer = Reviewer('Some', 'Buddy')
 some_reviewer = Reviewer('Albert', 'Gor')
 
 
-ordinary_student.courses_in_progress += ['Python', 'Java', 'Django', 'CSS']
+ordinary_student.courses_in_progress += ['Python', 'Java', 'Django', 'CSS', 'HTML']
 best_student.courses_in_progress += ['Python', 'Git', 'c++']
 
 new_lecturer.courses_attached += ['Python', 'Git', 'CSS', 'HTML']
 some_lecturer.courses_attached += ['Python', 'Git', 'CSS']
+best_lecturer.courses_attached += ['Python', 'Git', 'CSS', 'HTML']
 some_reviewer.courses_attached += ['Python', 'Git', 'CSS']
 cool_reviewer.courses_attached += ['Python', 'CSS']
 
@@ -124,6 +156,7 @@ ordinary_student.rating_lecturer(some_lecturer, 'Python', 8)
 ordinary_student.rating_lecturer(new_lecturer, 'Python', 10)
 best_student.rating_lecturer(some_lecturer, 'Python', 10)
 best_student.rating_lecturer(some_lecturer, 'Git', 10)
+ordinary_student.rating_lecturer(best_lecturer, 'HTML', 10)
 
 ordinary_student.finished_courses += ['HTML', 'c++', 'notepad']
 best_student.finished_courses += ['HTML', 'CSS', 'SQL']
@@ -150,3 +183,7 @@ some_reviewer.rate_hw(best_student, 'Git', 7)
 # print(average_course('Math', students))
 # print(average_course('Git', students))
 # print(average_course('CSS', students))
+# print(lecturer_average_grade('HTML', all_lecturer))
+# print(lecturer_average_grade('Python', all_lecturer))
+# print(lecturer_average_grade('CSS', all_lecturer))
+# print(lecturer_average_grade('Piano', all_lecturer))
